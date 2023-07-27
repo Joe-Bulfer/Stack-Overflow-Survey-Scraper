@@ -49,6 +49,20 @@ name/label (i.e Python) and a percent float. This is the best way I could
 come up with to resemble javascript objects (JSON), which it will be converted to. """
 
 usage_data = {
+    2013: {},
+    2014: {},
+    2015: {},
+    2016: {},
+    2017: {},
+    2018: {},
+    2019: {},
+    2020: {},
+    2021: {},
+    2022: {}
+}
+
+"""""
+usage_data = {
     2013: [
 
     ],
@@ -80,6 +94,7 @@ usage_data = {
 
     ],
 }
+"""
 
 """The slight differences in the graphs of the websites over the years requires slight 
 modifications, some labels are in divs, others in tr elements, etc."""
@@ -98,7 +113,8 @@ def scrape(soup,graph_id,year):
         stripped_stat = re.sub('%', '', stat)
         fl_stat = float(stripped_stat)
         #print(fl_stat)
-        usage_data[year].append({label: fl_stat})
+        #usage_data[year].append({label: fl_stat})
+        usage_data[year][label] = fl_stat
 
 def scrape_19(soup,graph_id, year):
     graph = soup.find(id=graph_id)
@@ -114,7 +130,8 @@ def scrape_19(soup,graph_id, year):
 
         stripped_stat = re.sub('%', '', stat)
         fl_stat = float(stripped_stat)
-        usage_data[year].append({label: fl_stat})
+        #usage_data[year].append({label: fl_stat})
+        usage_data[year][label] = fl_stat
 
 """This will work for 20-22"""
 def scrape_20(soup,graph_id,year):
@@ -127,7 +144,8 @@ def scrape_20(soup,graph_id,year):
         stripped_stat = re.sub('%', '', stat)
         first_part = stripped_stat.split()[0]
         fl_stat = float(first_part)
-        usage_data[year].append({cleaned_label: fl_stat})
+        #usage_data[year].append({cleaned_label: fl_stat})
+        usage_data[year][label] = fl_stat
 
 scrape(soup_16, "technology-most-popular-technologies-2013",2013)
 scrape(soup_16, "technology-most-popular-technologies-2014",2014)
@@ -140,7 +158,13 @@ scrape_20(soup_20, "technology-programming-scripting-and-markup-languages-all-re
 scrape_20(soup_21, "most-popular-technologies-language",2021)
 scrape_20(soup_22, "most-popular-technologies-language",2022)
 
-pprint.pprint(usage_data)
+#pprint.pprint(usage_data)
+
+"""First we dump the entire dictionary into a string format, then make a json file out of it."""
+json_data = json.dumps(usage_data)
+
+with open('test.json', 'w') as file:
+    file.write(json_data)
 
 """This just makes it easier if you want to sit at the terminal and 
 enter ID's, as you are testing what graph can be scraped, or not"""
