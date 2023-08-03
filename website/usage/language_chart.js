@@ -1,34 +1,30 @@
-// JavaScript
-let chart; // Declare chart variable outside the fetch so it can be accessed elsewhere
+let chart // Declare chart variable outside the fetch so it can be accessed elsewhere
 
 fetch("../../Scraper/language_usage.json")
   .then((res) => res.json())
   .then((data) => {
-    let pythonUsageData = [
-      data['2013']['Python'],
-      data['2014']['Python'],
-      data['2015']['Python'],
-      data['2016']['Python'],
-      data['2017']['Python'],
-      data['2018']['Python'],
-      data['2019']['Python'],
-      data['2020']['Python'],
-      data['2021']['Python'],
-      data['2022']['Python']
-    ];
+  let pythonUsageData = [];
+  let javascriptUsageData = [];
+  let phpUsageData = [];
+  let javaUsageData = [];
+  let csUsageData = [];
+  let cppUsageData = [];
+  let cUsageData = [];
+  let typescriptUsageData = [null, null, null, null, 9.5, 17.4, 21.2, 25.4, 30.19, 34.83]
+  let goUsageData = [null, null, null, null, 4.3, 7.1, 8.2, 8.8, 9.55, 11.15];
+  let sqlUsageData = [59.6, 57.1, 48.00, 49.1, 51.2, 57.0, 54.4, 54.7, 47.08, 49.43];
 
-    let javascriptUsageData = [
-      data['2013']['JavaScript'],
-      data['2014']['JavaScript'],
-      data['2015']['JavaScript'],
-      data['2016']['JavaScript'],
-      data['2017']['JavaScript'],
-      data['2018']['JavaScript'],
-      data['2019']['JavaScript'],
-      data['2020']['JavaScript'],
-      data['2021']['JavaScript'],
-      data['2022']['JavaScript']
-    ];
+  for (let year = 2013; year <= 2022; year++) {
+    pythonUsageData.push(data[year.toString()]['Python']);
+    javascriptUsageData.push(data[year.toString()]['JavaScript']);
+    phpUsageData.push(data[year.toString()]['PHP']);
+    javaUsageData.push(data[year.toString()]['Java']);
+    csUsageData.push(data[year.toString()]['C#']);
+    cppUsageData.push(data[year.toString()]['C++']);
+    cUsageData.push(data[year.toString()]['C']);
+  }
+     console.log(typescriptUsageData);
+
 
     let myChart =  document.getElementById('myChart').getContext('2d');
     
@@ -36,34 +32,113 @@ fetch("../../Scraper/language_usage.json")
       type:'line',
       data:{
         labels:['2013','2014','2015','2016','2017','2018','2019','2020','2021','2022'],
-        datasets:[{
-          label: 'Python Usage',
+        datasets: 
+        [{
+          label: 'Python',
           data: pythonUsageData,
-          borderColor: 'rgba(75, 192, 192, 1)',
-          fill: false
-        }]
+          borderColor: 'red',
+          fill: false,
+          hidden: true,
+        },
+        {
+          label: 'Javascript',
+          data: javascriptUsageData,
+          borderColor: 'blue',
+          fill: false,
+          hidden: true,
+        },
+        {
+          label: 'SQL',
+          data: sqlUsageData,
+          borderColor: 'green',
+          fill: false,
+          hidden: true,
+        },
+        {
+          label: 'Java',
+          data: javaUsageData,
+          borderColor: 'purple',
+          fill: false,
+          hidden: true,
+        },
+        {
+          label: 'C#',
+          data: csUsageData,
+          borderColor: 'pink',
+          fill: false,
+          hidden: true,
+        },
+        {
+          label: 'C',
+          data: cUsageData,
+          borderColor: 'lime',
+          fill: false,
+          hidden: true,
+        },
+        {
+          label: 'C++',
+          data: cppUsageData,
+          borderColor: 'orange',
+          fill: false,
+          hidden: true,
+        },
+        {
+          label: 'Typescript',
+          data: typescriptUsageData,
+          borderColor: 'tan',
+          fill: false,
+          hidden: true,
+        },
+        {
+          label: 'Go',
+          data: goUsageData,
+          borderColor: 'violet',
+          fill: false,
+          hidden: true,
+        },
+        {
+          label: 'PHP',
+          data: phpUsageData,
+          borderColor: 'yellow',
+          fill: false,
+          hidden: true,
+        }
+      ]
       },
       options: {
-        responsive: true,
-        title: {
-          display: true,
-          text: 'Python Usage Over Time'
+        responsive: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Language Usage Over Time',
+            font: {
+              size: 20
+            },
+          },
+          legend: {
+            position: 'right',
+            padding: 30,
+            labels:{
+              padding: 20,
+              font:{
+                size: 20,
+
+              }
+            },
+
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              // Define a callback to append '%' to the tick labels
+              callback: function(value, index, values) {
+                return value + '%';
+              }
+            }
+          }
         }
       }
     });
-
-    // Event listeners for the buttons
-    document.getElementById('pythonButton').addEventListener('click', () => {
-      chart.data.datasets[0].data = pythonUsageData;
-      chart.data.datasets[0].label = 'Python Usage';
-      chart.options.title.text = 'Python Usage Over Time';
-      chart.update();
-    });
-
-    document.getElementById('javascriptButton').addEventListener('click', () => {
-      chart.data.datasets[0].data = javascriptUsageData;
-      chart.data.datasets[0].label = 'JavaScript Usage';
-      chart.options.title.text = 'JavaScript Usage Over Time';
-      chart.update();
-    });
-  });
+});
