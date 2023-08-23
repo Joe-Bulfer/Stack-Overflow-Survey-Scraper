@@ -8,5 +8,5 @@ As programmers we must choose the right decisions when deciding between learning
 - [x] Scrape usage data of programming/scripting/markup languages of 2013-2022
 - [x] Convert python usage data to JSON
 - [x] Create chart.js for langauge usage of 2013-2022
-- [ ] Create about page 
+- [ ] Host web page on Github Pages
  
